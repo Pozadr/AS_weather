@@ -52,6 +52,16 @@ public class CatFact {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    private String src;
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
     @JsonProperty("used")
     public Boolean getUsed() {
         return used;
@@ -187,6 +197,7 @@ public class CatFact {
                 ", v=" + v +
                 ", status=" + status +
                 ", additionalProperties=" + additionalProperties +
+                ", src='" + src + '\'' +
                 '}';
     }
 }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animal Fact</title>
+</head>
+<body>
+
+<p th:text="${catFact.getText()}"></p>
+<img th:width="500px" th:src="${catFact.getSrc()}" alt="Cat img">
+
+</body>
+</html>
