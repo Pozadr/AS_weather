@@ -1,8 +1,5 @@
 package pl.pozadr.weather.api;
 
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
 public class Dog {
     private String name;
     private String breed;
@@ -29,5 +26,13 @@ public class Dog {
 
     public void setBreed(String breed) {
         this.breed = breed;
+    }
+
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "name='" + name + '\'' +
+                ", breed='" + breed + '\'' +
+                '}';
     }
 }
