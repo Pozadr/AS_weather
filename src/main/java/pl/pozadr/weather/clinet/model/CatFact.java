@@ -1,5 +1,5 @@
 
-package pl.pozadr.weather.model;
+package pl.pozadr.weather.clinet.model;
 
 import java.util.HashMap;
 import java.util.Map;

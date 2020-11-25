@@ -1,8 +1,8 @@
-package pl.pozadr.weather;
+package pl.pozadr.weather.clinet;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
-import pl.pozadr.weather.model.CatFact;
+import pl.pozadr.weather.clinet.model.CatFact;
 
 @Controller
 public class CatController {
