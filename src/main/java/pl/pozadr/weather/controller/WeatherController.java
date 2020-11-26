@@ -41,12 +41,24 @@ public class WeatherController {
         Long temperature = weatherService.getTemperature();
         String weatherStateName = weatherService.getWeatherStateName();
         String weatherStateIcon = weatherService.getIconLink();
+        Long airPressure = weatherService.getAirPressure();
+        Long windSpeed = weatherService.getWindSpeed();
+        String windDirectionCompass = weatherService.getWindDirectionCompass();
+        String sunRise = weatherService.getSunRise();
+        String sunSet = weatherService.getSunSet();
 
+
+        model.addAttribute("cityInput", new CityInput());
         model.addAttribute("city", city);
         model.addAttribute("temperature", temperature);
         model.addAttribute("weatherStateName", weatherStateName);
         model.addAttribute("iconLink", weatherStateIcon);
-        model.addAttribute("cityInput", new CityInput());
+        model.addAttribute("airPressure", airPressure);
+        model.addAttribute("windSpeed", windSpeed);
+        model.addAttribute("windDirectionCompass", windDirectionCompass);
+        model.addAttribute("sunRise", sunRise);
+        model.addAttribute("sunSet", sunSet);
+
         return "weatherView";
     }
 

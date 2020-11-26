@@ -86,4 +86,24 @@ public class WeatherService {
         return forecastFirstDay.getWeatherStateName();
     }
 
+    public Long getAirPressure() {
+        return Math.round(forecastFirstDay.getAirPressure());
+    }
+
+    public Long getWindSpeed() {
+        return Math.round(forecastFirstDay.getWindSpeed());
+    }
+
+    public String getWindDirectionCompass() {
+        return forecastFirstDay.getWindDirectionCompass();
+    }
+
+    public String getSunRise() {
+        return weatherForecast.getSunRise().substring(11, 16);
+    }
+
+    public String getSunSet() {
+        return weatherForecast.getSunSet().substring(11, 16);
+    }
+
 }
