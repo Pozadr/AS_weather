@@ -10,7 +10,7 @@ import pl.pozadr.weather.service.WeatherService;
 
 @Controller
 public class WeatherController {
-    private WeatherService weatherService;
+    private final WeatherService weatherService;
 
     @Autowired
     public WeatherController(WeatherService weatherService) {
@@ -27,8 +27,11 @@ public class WeatherController {
 
     @GetMapping("/set-weather")
     public String setWeather(@ModelAttribute CityInput cityInput) {
-        weatherService.setWeatherForecast(cityInput);
-        return "redirect:/weather-view";
+        boolean isWeatherSet = weatherService.setWeatherForecast(cityInput);
+        if (isWeatherSet) {
+            return "redirect:/weather-view";
+        }
+        return "weatherError";
     }
 
 
@@ -45,5 +48,11 @@ public class WeatherController {
         model.addAttribute("iconLink", weatherStateIcon);
         model.addAttribute("cityInput", new CityInput());
         return "weatherView";
+    }
+
+
+    @GetMapping("/go-to-home-page")
+    public String goToHomePage() {
+        return "redirect:/weather-home";
     }
 }

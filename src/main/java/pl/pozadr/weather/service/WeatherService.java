@@ -7,19 +7,22 @@ import pl.pozadr.weather.model.City;
 import pl.pozadr.weather.model.ConsolidatedWeather;
 import pl.pozadr.weather.model.WeatherForecast;
 
+
 @Service
 public class WeatherService {
     private WeatherForecast weatherForecast;
     private ConsolidatedWeather forecastFirstDay;
 
-    public void setWeatherForecast(CityInput cityInput) {
+    public boolean setWeatherForecast(CityInput cityInput) {
         String cityUrl = "https://www.metaweather.com/api/location/search/?query=" +
                 cityInput.getName().toLowerCase();
 
         RestTemplate restTemplateCity = new RestTemplate();
         City[] searchCity = restTemplateCity.getForObject(cityUrl, City[].class);
+        if (searchCity == null || searchCity.length == 0) {
+            return false;
+        }
 
-        assert searchCity != null;
         String weatherUrl = "https://www.metaweather.com/api/location/" +
                 searchCity[0].getWoeid();
 
@@ -27,6 +30,8 @@ public class WeatherService {
         this.weatherForecast = restTemplateWeather.getForObject(weatherUrl, WeatherForecast.class);
         assert weatherForecast != null;
         forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
+
+        return true;
     }
 
 
