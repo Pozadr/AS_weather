@@ -1,8 +1,9 @@
 
-package pl.pozadr.weather.client.model;
+package pl.pozadr.weather.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,26 +13,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "weather_state_name",
-    "weather_state_abbr",
-    "wind_direction_compass",
-    "created",
-    "applicable_date",
-    "min_temp",
-    "max_temp",
-    "the_temp",
-    "wind_speed",
-    "wind_direction",
-    "air_pressure",
-    "humidity",
-    "visibility",
-    "predictability"
+        "id",
+        "weather_state_name",
+        "weather_state_abbr",
+        "wind_direction_compass",
+        "created",
+        "applicable_date",
+        "min_temp",
+        "max_temp",
+        "the_temp",
+        "wind_speed",
+        "wind_direction",
+        "air_pressure",
+        "humidity",
+        "visibility",
+        "predictability"
 })
 public class ConsolidatedWeather {
 
     @JsonProperty("id")
-    private Integer id;
+    private Long id;
     @JsonProperty("weather_state_name")
     private String weatherStateName;
     @JsonProperty("weather_state_abbr")
@@ -64,12 +65,12 @@ public class ConsolidatedWeather {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("id")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

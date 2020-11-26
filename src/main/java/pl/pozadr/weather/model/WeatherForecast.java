@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "latt_long",
     "timezone"
 })
-public class WeatherForcast {
+public class WeatherForecast {
 
     @JsonProperty("consolidated_weather")
     private List<ConsolidatedWeather> consolidatedWeather = null;

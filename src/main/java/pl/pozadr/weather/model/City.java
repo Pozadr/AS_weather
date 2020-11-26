@@ -1,4 +1,3 @@
-
 package pl.pozadr.weather.model;
 
 import java.util.HashMap;
@@ -12,12 +11,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "title",
-    "location_type",
-    "woeid",
-    "latt_long"
+        "title",
+        "location_type",
+        "woeid",
+        "latt_long"
 })
-public class Parent {
+public class City {
 
     @JsonProperty("title")
     private String title;
@@ -82,7 +81,7 @@ public class Parent {
 
     @Override
     public String toString() {
-        return "Parent{" +
+        return "City{" +
                 "title='" + title + '\'' +
                 ", locationType='" + locationType + '\'' +
                 ", woeid=" + woeid +

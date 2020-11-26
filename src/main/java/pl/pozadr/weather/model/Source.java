@@ -1,5 +1,5 @@
 
-package pl.pozadr.weather.client.model;
+package pl.pozadr.weather.model;
 
 import java.util.HashMap;
 import java.util.Map;
