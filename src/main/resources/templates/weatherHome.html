@@ -6,19 +6,19 @@
     <title>Weather</title>
 </head>
 <body>
-<form th:action="@{/set-weather}" th:object="${cityInput}" th:method="get">
-    <table>
-        <tr>
-            <td>
-                <label>
-                    <input name="post-city" id="city-name" type="text" placeholder="Type the city" th:field="*{name}">
-                </label>
-            </td>
-            <td>
-                <input name="post-city-submit" type="submit" value="Confirm">
-            </td>
-    </table>
-</form>
+
+<div class="weather-div">
+    <h1>Weather forecast app</h1>
+    <div class="weather-form-div">
+        <form th:action="@{/set-weather}" th:object="${cityInput}" th:method="get">
+            <label>
+                <input class="weather-input-text" name="post-city" id="city-name" type="text"
+                       placeholder="Type the city" th:field="*{name}">
+            </label>
+            <input class="weather-input-submit" name="post-city-submit" type="submit" value="Confirm">
+        </form>
+    </div>
+</div>
 
 
 </body>

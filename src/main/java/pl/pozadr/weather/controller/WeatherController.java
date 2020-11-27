@@ -27,6 +27,9 @@ public class WeatherController {
 
     @GetMapping("/set-weather")
     public String setWeather(@ModelAttribute CityInput cityInput) {
+        if (cityInput.getName().trim().equals("")) {
+            return "weatherError";
+        }
         boolean isWeatherSet = weatherService.setWeatherForecast(cityInput);
         if (isWeatherSet) {
             return "redirect:/weather-view";
