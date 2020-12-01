@@ -4,7 +4,7 @@
 ## General
 
 Weather forecast visualization regarding user request.
- Used the [remote API](https://www.exchangerate-api.com/).
+ Used the [remote API](https://www.metaweather.com/api/).
 
 ## Technologies
 
