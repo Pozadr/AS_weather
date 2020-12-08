@@ -1,36 +1,42 @@
 package pl.pozadr.weather.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import pl.pozadr.weather.controller.thymeleaf.CityInput;
+import pl.pozadr.weather.dto.CityInput;
+import pl.pozadr.weather.fetcher.RemoteApiFetcherImpl;
 import pl.pozadr.weather.model.City;
 import pl.pozadr.weather.model.ConsolidatedWeather;
 import pl.pozadr.weather.model.WeatherForecast;
+
+import java.util.Optional;
 
 
 @Service
 public class WeatherService {
     private WeatherForecast weatherForecast;
     private ConsolidatedWeather forecastFirstDay;
+    private final RemoteApiFetcherImpl remoteApiFetcherImpl;
+
+    @Autowired
+    public WeatherService(RemoteApiFetcherImpl remoteApiFetcherImpl) {
+        this.remoteApiFetcherImpl = remoteApiFetcherImpl;
+    }
 
     public boolean setWeatherForecast(CityInput cityInput) {
-        String cityUrl = "https://www.metaweather.com/api/location/search/?query=" +
-                cityInput.getName().toLowerCase();
-
-        RestTemplate restTemplateCity = new RestTemplate();
-        City[] searchCity = restTemplateCity.getForObject(cityUrl, City[].class);
-        if (searchCity == null || searchCity.length == 0) {
+        Optional<City[]> searchCityOpt = remoteApiFetcherImpl.fetchCitiesFromRemoteApi(cityInput);
+        if (searchCityOpt.isEmpty() || searchCityOpt.get().length == 0) {
             return false;
         }
+        City[] cities = searchCityOpt.get();
 
-        String weatherUrl = "https://www.metaweather.com/api/location/" +
-                searchCity[0].getWoeid();
-
-        RestTemplate restTemplateWeather = new RestTemplate();
-        this.weatherForecast = restTemplateWeather.getForObject(weatherUrl, WeatherForecast.class);
-        assert weatherForecast != null;
-        forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
-
+        Optional<WeatherForecast> weatherForecastOpt = remoteApiFetcherImpl.fetchWeatherForecastFromRemoteApi(cities[0]);
+        if (weatherForecastOpt.isPresent()) {
+            this.weatherForecast = weatherForecastOpt.get();
+            forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
+        } else {
+            System.out.println("Error: Remote API data fetcher failure.");
+            return false;
+        }
         return true;
     }
 

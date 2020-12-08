@@ -1,4 +1,4 @@
-package pl.pozadr.weather.controller.thymeleaf;
+package pl.pozadr.weather.dto;
 
 public class CityInput {
     private String name;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import pl.pozadr.weather.controller.thymeleaf.CityInput;
+import pl.pozadr.weather.dto.CityInput;
 import pl.pozadr.weather.service.WeatherService;
 
 @Controller
