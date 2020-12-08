@@ -5,5 +5,6 @@ import pl.pozadr.weather.dto.WeatherInfo;
 
 public interface WeatherService {
     boolean setWeatherForecast(CityInput cityInput);
+
     WeatherInfo getWeatherInfo();
 }
