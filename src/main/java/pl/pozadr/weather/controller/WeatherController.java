@@ -6,14 +6,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pl.pozadr.weather.dto.CityInput;
+import pl.pozadr.weather.dto.WeatherInfo;
 import pl.pozadr.weather.service.WeatherService;
+import pl.pozadr.weather.service.WeatherServiceImpl;
 
 @Controller
 public class WeatherController {
     private final WeatherService weatherService;
 
     @Autowired
-    public WeatherController(WeatherService weatherService) {
+    public WeatherController(WeatherServiceImpl weatherService) {
         this.weatherService = weatherService;
     }
 
@@ -40,27 +42,18 @@ public class WeatherController {
 
     @GetMapping("/weather-view")
     public String getWeather(Model model) {
-        String city = weatherService.getCity();
-        Long temperature = weatherService.getTemperature();
-        String weatherStateName = weatherService.getWeatherStateName();
-        String weatherStateIcon = weatherService.getIconLink();
-        Long airPressure = weatherService.getAirPressure();
-        Long windSpeed = weatherService.getWindSpeed();
-        String windDirectionCompass = weatherService.getWindDirectionCompass();
-        String sunRise = weatherService.getSunRise();
-        String sunSet = weatherService.getSunSet();
-
+        WeatherInfo weatherInfo = weatherService.getWeatherInfo();
 
         model.addAttribute("cityInput", new CityInput());
-        model.addAttribute("city", city);
-        model.addAttribute("temperature", temperature);
-        model.addAttribute("weatherStateName", weatherStateName);
-        model.addAttribute("iconLink", weatherStateIcon);
-        model.addAttribute("airPressure", airPressure);
-        model.addAttribute("windSpeed", windSpeed);
-        model.addAttribute("windDirectionCompass", windDirectionCompass);
-        model.addAttribute("sunRise", sunRise);
-        model.addAttribute("sunSet", sunSet);
+        model.addAttribute("city", weatherInfo.getCity());
+        model.addAttribute("temperature", weatherInfo.getTemperature());
+        model.addAttribute("weatherStateName", weatherInfo.getWeatherStateName());
+        model.addAttribute("iconLink", weatherInfo.getIconLink());
+        model.addAttribute("airPressure", weatherInfo.getAirPressure());
+        model.addAttribute("windSpeed", weatherInfo.getWindSpeed());
+        model.addAttribute("windDirectionCompass", weatherInfo.getWindDirectionCompass());
+        model.addAttribute("sunRise", weatherInfo.getSunRise());
+        model.addAttribute("sunSet", weatherInfo.getSunSet());
 
         return "weatherView";
     }
