@@ -13,7 +13,7 @@ public enum IconLink {
     T("https://www.metaweather.com//static/img/weather/t.svg"),
     HR("https://www.metaweather.com//static/img/weather/hr.svg"),
     LR("https://www.metaweather.com//static/img/weather/lr.svg"),
-    SS("https://www.metaweather.com//static/img/weather/s.svg"),
+    S("https://www.metaweather.com//static/img/weather/s.svg"),
     HC("https://www.metaweather.com//static/img/weather/hc.svg"),
     LC("https://www.metaweather.com//static/img/weather/lc.svg"),
     C("https://www.metaweather.com//static/img/weather/c.svg");

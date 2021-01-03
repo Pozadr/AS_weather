@@ -2,7 +2,6 @@ package pl.pozadr.weather.service.currentWeather;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.pozadr.weather.dto.CityInput;
 import pl.pozadr.weather.dto.WeatherInfo;
 import pl.pozadr.weather.fetcher.RemoteApiFetcher;
 import pl.pozadr.weather.model.currentWeather.City;
@@ -19,7 +18,6 @@ public class WeatherServiceImpl implements WeatherService {
     private ConsolidatedWeather forecastFirstDay;
     private final RemoteApiFetcher remoteApiFetcher;
 
-
     @Autowired
     public WeatherServiceImpl(RemoteApiFetcher remoteApiFetcher) {
         this.remoteApiFetcher = remoteApiFetcher;
@@ -27,7 +25,7 @@ public class WeatherServiceImpl implements WeatherService {
 
 
     @Override
-    public boolean setWeatherForecast(CityInput cityInput) {
+    public boolean setWeatherForecast(String cityInput) {
         Optional<City[]> searchCityOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityInput);
         if (searchCityOpt.isEmpty() || searchCityOpt.get().length == 0) {
             return false;
@@ -37,7 +35,7 @@ public class WeatherServiceImpl implements WeatherService {
         Optional<WeatherForecast> weatherForecastOpt =
                 remoteApiFetcher.fetchWeatherForecastFromRemoteApi(cities[0]);
         if (weatherForecastOpt.isPresent()) {
-            this.weatherForecast = weatherForecastOpt.get();
+            weatherForecast = weatherForecastOpt.get();
             forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
         } else {
             System.out.println("Error: Remote API data fetcher failure.");
@@ -63,7 +61,7 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
 
-    private String getIconLink() {
+    public String getIconLink() {
         String weatherState = weatherForecast.getConsolidatedWeather().get(0).getWeatherStateAbbr();
         String link = "";
         try {

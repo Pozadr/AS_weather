@@ -82,4 +82,19 @@ public class WeatherInfo {
     public void setIconLink(String iconLink) {
         IconLink = iconLink;
     }
+
+    @Override
+    public String toString() {
+        return "WeatherInfo{" +
+                "city='" + city + '\'' +
+                ", temperature=" + temperature +
+                ", weatherStateName='" + weatherStateName + '\'' +
+                ", airPressure=" + airPressure +
+                ", windDirectionCompass='" + windDirectionCompass + '\'' +
+                ", sunRise='" + sunRise + '\'' +
+                ", sunSet='" + sunSet + '\'' +
+                ", windSpeed=" + windSpeed +
+                ", IconLink='" + IconLink + '\'' +
+                '}';
+    }
 }

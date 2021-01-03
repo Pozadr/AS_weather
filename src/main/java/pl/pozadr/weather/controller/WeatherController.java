@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import pl.pozadr.weather.dto.CityInput;
 import pl.pozadr.weather.dto.WeatherInfo;
 import pl.pozadr.weather.service.currentWeather.WeatherService;
 import pl.pozadr.weather.service.currentWeather.WeatherServiceImpl;
@@ -22,17 +20,16 @@ public class WeatherController {
 
     @GetMapping("/weather-home")
     public String getWeatherHome(Model model) {
-        model.addAttribute("cityInput", new CityInput());
         return "weatherHome";
     }
 
 
     @GetMapping("/set-weather")
-    public String setWeather(@ModelAttribute CityInput cityInput) {
-        if (cityInput.getName().trim().equals("")) {
+    public String setWeather(String city) {
+        if (city.trim().equals("")) {
             return "weatherError";
         }
-        boolean isWeatherSet = weatherService.setWeatherForecast(cityInput);
+        boolean isWeatherSet = weatherService.setWeatherForecast(city);
         if (isWeatherSet) {
             return "redirect:/weather-view";
         }
@@ -44,7 +41,6 @@ public class WeatherController {
     public String getWeather(Model model) {
         WeatherInfo weatherInfo = weatherService.getWeatherInfo();
 
-        model.addAttribute("cityInput", new CityInput());
         model.addAttribute("city", weatherInfo.getCity());
         model.addAttribute("temperature", weatherInfo.getTemperature());
         model.addAttribute("weatherStateName", weatherInfo.getWeatherStateName());

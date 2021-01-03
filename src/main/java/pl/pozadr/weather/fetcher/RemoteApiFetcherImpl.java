@@ -2,7 +2,6 @@ package pl.pozadr.weather.fetcher;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.pozadr.weather.dto.CityInput;
 import pl.pozadr.weather.model.currentWeather.City;
 import pl.pozadr.weather.model.currentWeather.WeatherForecast;
 
@@ -18,9 +17,9 @@ public class RemoteApiFetcherImpl implements RemoteApiFetcher {
         return Optional.ofNullable(restTemplateWeather.getForObject(weatherUrl, WeatherForecast.class));
     }
 
-    public Optional<City[]> fetchCitiesFromRemoteApi(CityInput cityInput) {
+    public Optional<City[]> fetchCitiesFromRemoteApi(String cityInput) {
         String cityUrl = "https://www.metaweather.com/api/location/search/?query=" +
-                cityInput.getName().toLowerCase();
+                cityInput.toLowerCase();
 
         RestTemplate restTemplateCity = new RestTemplate();
         return Optional.ofNullable(restTemplateCity.getForObject(cityUrl, City[].class));

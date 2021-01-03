@@ -10,11 +10,10 @@
 <div class="weather-div">
     <h1>Weather forecast app</h1>
     <div class="weather-form-div">
-        <form th:action="@{/set-weather}" th:object="${cityInput}" th:method="get">
-            <label>
-                <input class="weather-input-text" name="post-city" id="city-name" type="text"
-                       placeholder="Type the city" th:field="*{name}">
-            </label>
+        <form th:action="@{/set-weather}" th:method="get">
+            <label for="city-name"></label>
+                <input class="weather-input-text" name="city" id="city-name" type="text"
+                       placeholder="Type the city">
             <input class="weather-input-submit" name="post-city-submit" type="submit" value="Confirm">
         </form>
     </div>
