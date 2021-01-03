@@ -1,4 +1,4 @@
-package pl.pozadr.weather.service;
+package pl.pozadr.weather.service.currentWeather;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

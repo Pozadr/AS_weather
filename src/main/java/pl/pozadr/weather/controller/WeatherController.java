@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pl.pozadr.weather.dto.CityInput;
 import pl.pozadr.weather.dto.WeatherInfo;
-import pl.pozadr.weather.service.WeatherService;
-import pl.pozadr.weather.service.WeatherServiceImpl;
+import pl.pozadr.weather.service.currentWeather.WeatherService;
+import pl.pozadr.weather.service.currentWeather.WeatherServiceImpl;
 
 @Controller
 public class WeatherController {
