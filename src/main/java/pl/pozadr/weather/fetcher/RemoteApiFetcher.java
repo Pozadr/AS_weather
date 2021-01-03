@@ -1,8 +1,8 @@
 package pl.pozadr.weather.fetcher;
 
 import pl.pozadr.weather.dto.CityInput;
-import pl.pozadr.weather.model.City;
-import pl.pozadr.weather.model.WeatherForecast;
+import pl.pozadr.weather.model.currentWeather.City;
+import pl.pozadr.weather.model.currentWeather.WeatherForecast;
 
 import java.util.Optional;
 

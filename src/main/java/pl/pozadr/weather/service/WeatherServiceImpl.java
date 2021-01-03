@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import pl.pozadr.weather.dto.CityInput;
 import pl.pozadr.weather.dto.WeatherInfo;
 import pl.pozadr.weather.fetcher.RemoteApiFetcher;
-import pl.pozadr.weather.model.City;
-import pl.pozadr.weather.model.ConsolidatedWeather;
-import pl.pozadr.weather.model.IconLink;
-import pl.pozadr.weather.model.WeatherForecast;
+import pl.pozadr.weather.model.currentWeather.City;
+import pl.pozadr.weather.model.currentWeather.ConsolidatedWeather;
+import pl.pozadr.weather.model.currentWeather.IconLink;
+import pl.pozadr.weather.model.currentWeather.WeatherForecast;
 
 import java.util.Optional;
 
