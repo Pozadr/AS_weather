@@ -3,9 +3,21 @@
 
 ## General
 
-Weather forecast visualization regarding user request.
- Used the [remote API](https://www.metaweather.com/api/). Application allows following history of weather for selected 
-city. Historical data is saved in DB every hour. User can display historical data: whole or find by followed city.
+Weather forecast visualization regarding user request. Application uses the [remote API](https://www.metaweather.com/api/).
+Allows following history of weather for selected city. Historical data is saved in DataBase every hour. 
+User can display historical data: whole or find by followed city.
+
+## Configuration
+
+application.properties file:
+
+    spring.datasource.url=
+    spring.datasource.username=
+    spring.datasource.password=
+    spring.datasource.driver-class-name=
+    
+    spring.jpa.hibernate.ddl-auto=update
+    spring.jpa.show-sql=<true/false>
 
 ## Technologies
 
@@ -13,14 +25,13 @@ city. Historical data is saved in DB every hour. User can display historical dat
 - Maven
 - Spring Boot 2.4.0
 - Thymeleaf - UI
-- MySQL (remotesql.com)
+- MySQL - [remotesql](https://remotemysql.com/)
 - Hibernate
 
 ## Screenshots
 
 ![home](./prtScr/1.png "Home")
-
 ![weather](./prtScr/2.png "Weather")
-
+![history](./prtScr/4.png "History")
 ![error](./prtScr/3.png "Error")
 

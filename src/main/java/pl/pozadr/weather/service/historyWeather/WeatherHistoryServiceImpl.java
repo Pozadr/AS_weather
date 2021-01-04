@@ -33,6 +33,19 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         this.followedCity = "None";
     }
 
+    @Scheduled(fixedDelay = 10000)
+    private void saveDataToDataBase() {
+        if (!followedCity.isBlank() || !followedCity.equals("None")) {
+            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
+            if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
+                boolean isWeatherSet = setWeatherForecast(citiesOpt.get()[0]);
+                if (isWeatherSet) {
+                    saveWeather();
+                }
+            }
+        }
+    }
+
     @Override
     public List<WeatherHistory> findAll() {
         return weatherHistoryRepo.findAll();
@@ -59,18 +72,6 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         return followedCity;
     }
 
-    @Scheduled(fixedDelay = 10000)
-    private void saveDataToDataBase() {
-        if (!followedCity.isBlank() || !followedCity.equals("None")) {
-            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
-            if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
-                boolean isWeatherSet = setWeatherForecast(citiesOpt.get()[0]);
-                if (isWeatherSet) {
-                    saveWeather();
-                }
-            }
-        }
-    }
 
     private boolean setWeatherForecast(City city) {
         Optional<WeatherForecast> weatherForecastOpt =
