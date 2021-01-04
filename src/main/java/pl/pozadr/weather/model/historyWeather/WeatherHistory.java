@@ -25,12 +25,17 @@ public class WeatherHistory {
 
     private Long windSpeed;
 
-    private String IconLink;
+    private String iconLink;
+
+    private String dateTime;
 
     public WeatherHistory() {
     }
 
-    public WeatherHistory(String city, Long temperature, String weatherStateName, Long airPressure, String windDirectionCompass, String sunRise, String sunSet, Long windSpeed, String iconLink) {
+    public WeatherHistory(Long id, String city, Long temperature, String weatherStateName, Long airPressure,
+                          String windDirectionCompass, String sunRise, String sunSet, Long windSpeed, String iconLink,
+                          String dateTime) {
+        this.id = id;
         this.city = city;
         this.temperature = temperature;
         this.weatherStateName = weatherStateName;
@@ -39,7 +44,8 @@ public class WeatherHistory {
         this.sunRise = sunRise;
         this.sunSet = sunSet;
         this.windSpeed = windSpeed;
-        IconLink = iconLink;
+        this.iconLink = iconLink;
+        this.dateTime = dateTime;
     }
 
     public Long getId() {
@@ -115,10 +121,18 @@ public class WeatherHistory {
     }
 
     public String getIconLink() {
-        return IconLink;
+        return iconLink;
     }
 
     public void setIconLink(String iconLink) {
-        IconLink = iconLink;
+        this.iconLink = iconLink;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 }

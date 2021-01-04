@@ -4,7 +4,8 @@
 ## General
 
 Weather forecast visualization regarding user request.
- Used the [remote API](https://www.metaweather.com/api/).
+ Used the [remote API](https://www.metaweather.com/api/). Application allows following history of weather for selected 
+city. Historical data is saved in DB every hour. User can display historical data: whole or find by followed city.
 
 ## Technologies
 
@@ -12,6 +13,8 @@ Weather forecast visualization regarding user request.
 - Maven
 - Spring Boot 2.4.0
 - Thymeleaf - UI
+- MySQL (remotesql.com)
+- Hibernate
 
 ## Screenshots
 

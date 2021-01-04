@@ -21,7 +21,8 @@
 <div class="container">
     <table class="table table-striped">
         <tr>
-            <th scope="col"> Id:</th>
+            <th scope="col">Id:</th>
+            <th scope="col">Date&time:</th>
             <th scope="col">City:</th>
             <th scope="col">Temperature:</th>
             <th scope="col">Icon link:</th>
@@ -34,6 +35,7 @@
         </tr>
         <tr th:each="row: ${weatherHistory}">
             <td th:text="${row.getId()}"></td>
+            <td th:text="${row.getDateTime()}"></td>
             <td th:text="${row.getCity()}"></td>
             <td th:text="${row.getTemperature()}"></td>
             <td th:text="${row.getIconLink()}"></td>

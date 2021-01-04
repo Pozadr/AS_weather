@@ -59,7 +59,7 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         return followedCity;
     }
 
-    @Scheduled(fixedDelay = 1000000)
+    @Scheduled(fixedDelay = 10000)
     private void saveDataToDataBase() {
         if (!followedCity.isBlank() || !followedCity.equals("None")) {
             Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
@@ -85,7 +85,6 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         return true;
     }
 
-
     private void saveWeather() {
         WeatherHistory weatherHistory = new WeatherHistory();
         weatherHistory.setCity(weatherForecast.getTitle());
@@ -97,6 +96,12 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         weatherHistory.setSunRise(weatherForecast.getSunRise().substring(11, 16));
         weatherHistory.setSunSet(weatherForecast.getSunSet().substring(11, 16));
         weatherHistory.setIconLink(getIconLink());
+
+        String dateTime = forecastFirstDay.getCreated().substring(0, 10) +
+                " " +
+                forecastFirstDay.getCreated().substring(11, 19);
+        weatherHistory.setDateTime(dateTime);
+
         weatherHistoryRepo.save(weatherHistory);
     }
 
