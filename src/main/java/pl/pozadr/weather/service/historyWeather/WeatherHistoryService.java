@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface WeatherHistoryService {
     List<WeatherHistory> findAll();
-    void setCityToFollow(String cityToFollow);
+    boolean setCityToFollow(String cityToFollow);
     String getCityToFollow();
 }

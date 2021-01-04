@@ -3,7 +3,6 @@ package pl.pozadr.weather.service.historyWeather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pl.pozadr.weather.dto.WeatherInfo;
 import pl.pozadr.weather.fetcher.RemoteApiFetcher;
 
 import pl.pozadr.weather.model.currentWeather.City;
@@ -31,7 +30,7 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         this.weatherHistoryRepo = weatherHistoryRepo;
         this.weatherForecast = new WeatherForecast();
         this.forecastFirstDay = new ConsolidatedWeather();
-        this.cityToFollow = "Paris";
+        this.cityToFollow = "None";
     }
 
     @Override
@@ -40,8 +39,14 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
     }
 
     @Override
-    public void setCityToFollow(String cityToFollow) {
-        this.cityToFollow = cityToFollow;
+    public boolean setCityToFollow(String cityToFollow) {
+        Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityToFollow);
+        if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
+            this.cityToFollow = citiesOpt.get()[0].getTitle();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -51,24 +56,20 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
 
     @Scheduled(fixedDelay = 10000)
     private void saveDataToDataBase() {
-        if (!cityToFollow.isBlank()) {
-            boolean isWeatherSet = setWeatherForecast(cityToFollow);
-            if (isWeatherSet) {
-                saveWeather();
+        if (!cityToFollow.isBlank() || !cityToFollow.equals("None")) {
+            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityToFollow);
+            if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
+                boolean isWeatherSet = setWeatherForecast(citiesOpt.get()[0]);
+                if (isWeatherSet) {
+                    saveWeather();
+                }
             }
         }
-        System.out.println("Fixed delay task - " + System.currentTimeMillis() / 5000);
     }
 
-    private boolean setWeatherForecast(String cityInput) {
-        Optional<City[]> searchCityOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityInput);
-        if (searchCityOpt.isEmpty() || searchCityOpt.get().length == 0) {
-            return false;
-        }
-        City[] cities = searchCityOpt.get();
-
+    private boolean setWeatherForecast(City city) {
         Optional<WeatherForecast> weatherForecastOpt =
-                remoteApiFetcher.fetchWeatherForecastFromRemoteApi(cities[0]);
+                remoteApiFetcher.fetchWeatherForecastFromRemoteApi(city);
         if (weatherForecastOpt.isPresent()) {
             weatherForecast = weatherForecastOpt.get();
             forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);

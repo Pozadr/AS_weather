@@ -7,4 +7,5 @@ import pl.pozadr.weather.model.historyWeather.WeatherHistory;
 @Repository
 public interface WeatherHistoryRepo extends JpaRepository<WeatherHistory, Long> {
 
+
 }

@@ -4,27 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import pl.pozadr.weather.dto.WeatherInfo;
 import pl.pozadr.weather.service.currentWeather.WeatherService;
 import pl.pozadr.weather.service.currentWeather.WeatherServiceImpl;
+import pl.pozadr.weather.service.historyWeather.WeatherHistoryService;
+import pl.pozadr.weather.service.historyWeather.WeatherHistoryServiceImpl;
 
 @Controller
 public class WeatherController {
     private final WeatherService weatherService;
+    private final WeatherHistoryService weatherHistoryService;
 
     @Autowired
-    public WeatherController(WeatherServiceImpl weatherService) {
+    public WeatherController(WeatherServiceImpl weatherService, WeatherHistoryServiceImpl weatherHistoryService) {
         this.weatherService = weatherService;
+        this.weatherHistoryService = weatherHistoryService;
     }
 
 
     @GetMapping("/weather-home")
     public String getWeatherHome(Model model) {
+        model.addAttribute("followedCity", weatherHistoryService.getCityToFollow());
         return "weatherHome";
     }
 
 
-    @GetMapping("/set-weather")
+    @RequestMapping(value = "/set-weather", method = {RequestMethod.PUT, RequestMethod.POST})
     public String setWeather(String city) {
         if (city.trim().equals("")) {
             return "weatherError";
@@ -34,6 +41,27 @@ public class WeatherController {
             return "redirect:/weather-view";
         }
         return "weatherError";
+    }
+
+    @RequestMapping(value = "/set-weather-history-city-home", method = {RequestMethod.PUT, RequestMethod.POST})
+    public String setWeatherHistoryCityHome(String city) {
+        boolean isCitySet = weatherHistoryService.setCityToFollow(city);
+        if (isCitySet) {
+            return "redirect:/weather-home";
+        }
+        return "weatherError";
+    }
+
+    @GetMapping("/get-history")
+    public String getHistory(Model model) {
+        // find by currently followed city
+        return "weatherHistory";
+    }
+
+    @GetMapping("/get-whole-history")
+    public String getWholeHistory(Model model) {
+        model.addAttribute("weatherHistory", weatherHistoryService.findAll());
+        return "weatherHistory";
     }
 
 
