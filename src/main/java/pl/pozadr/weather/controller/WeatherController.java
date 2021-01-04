@@ -26,7 +26,7 @@ public class WeatherController {
 
     @GetMapping("/weather-home")
     public String getWeatherHome(Model model) {
-        model.addAttribute("followedCity", weatherHistoryService.getCityToFollow());
+        model.addAttribute("followedCity", weatherHistoryService.getFollowedCity());
         return "weatherHome";
     }
 
@@ -54,7 +54,7 @@ public class WeatherController {
 
     @GetMapping("/get-history")
     public String getHistory(Model model) {
-        // find by currently followed city
+        model.addAttribute("weatherHistory", weatherHistoryService.findByFollowedCity());
         return "weatherHistory";
     }
 

@@ -4,6 +4,22 @@ body {
 
 }
 
+.home-form-description {
+    text-align: left;
+    margin-left: 110px;
+    margin-bottom: 0px;
+}
+
+.home-followed-city {
+    font-size: 20px;
+    text-align: left;
+    margin-left: 110px;
+}
+
+.home-form {
+    margin-bottom: 20px;
+}
+
 .weather-div {
     margin: 0 auto;
     width: 500px;

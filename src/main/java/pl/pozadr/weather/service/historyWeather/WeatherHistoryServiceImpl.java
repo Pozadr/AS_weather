@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 public class WeatherHistoryServiceImpl implements WeatherHistoryService {
-    private String cityToFollow;
+    private String followedCity;
     private final WeatherHistoryRepo weatherHistoryRepo;
     private final RemoteApiFetcher remoteApiFetcher;
     private WeatherForecast weatherForecast;
@@ -30,7 +30,7 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         this.weatherHistoryRepo = weatherHistoryRepo;
         this.weatherForecast = new WeatherForecast();
         this.forecastFirstDay = new ConsolidatedWeather();
-        this.cityToFollow = "None";
+        this.followedCity = "None";
     }
 
     @Override
@@ -39,10 +39,15 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
     }
 
     @Override
+    public List<WeatherHistory> findByFollowedCity() {
+        return weatherHistoryRepo.findByCity(followedCity);
+    }
+
+    @Override
     public boolean setCityToFollow(String cityToFollow) {
         Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityToFollow);
         if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
-            this.cityToFollow = citiesOpt.get()[0].getTitle();
+            this.followedCity = citiesOpt.get()[0].getTitle();
             return true;
         } else {
             return false;
@@ -50,14 +55,14 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
     }
 
     @Override
-    public String getCityToFollow() {
-        return cityToFollow;
+    public String getFollowedCity() {
+        return followedCity;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 1000000)
     private void saveDataToDataBase() {
-        if (!cityToFollow.isBlank() || !cityToFollow.equals("None")) {
-            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityToFollow);
+        if (!followedCity.isBlank() || !followedCity.equals("None")) {
+            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
             if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
                 boolean isWeatherSet = setWeatherForecast(citiesOpt.get()[0]);
                 if (isWeatherSet) {
