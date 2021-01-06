@@ -33,7 +33,7 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         this.followedCity = "None";
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 3600000)
     private void saveDataToDataBase() {
         if (!followedCity.isBlank() || !followedCity.equals("None")) {
             Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
