@@ -23,27 +23,21 @@ public class WeatherServiceImpl implements WeatherService {
         this.remoteApiFetcher = remoteApiFetcher;
     }
 
-
     @Override
     public boolean setWeatherForecast(String cityInput) {
-        Optional<City[]> searchCityOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityInput);
-        if (searchCityOpt.isEmpty() || searchCityOpt.get().length == 0) {
+        Optional<City[]> citiesFromRemoteApi = getCitiesFromRemoteApi(cityInput);
+        if (citiesFromRemoteApi.isEmpty() || citiesFromRemoteApi.get().length == 0) {
             return false;
         }
-        City[] cities = searchCityOpt.get();
-
-        Optional<WeatherForecast> weatherForecastOpt =
-                remoteApiFetcher.fetchWeatherForecastFromRemoteApi(cities[0]);
-        if (weatherForecastOpt.isPresent()) {
-            weatherForecast = weatherForecastOpt.get();
-            forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
-        } else {
-            System.out.println("Error: Remote API data fetcher failure.");
+        City city = citiesFromRemoteApi.get()[0];
+        Optional<WeatherForecast> weatherForecastOpt = getWeatherForecastFromRemoteApi(city);
+        if (weatherForecastOpt.isEmpty()) {
             return false;
         }
+        this.weatherForecast = weatherForecastOpt.get();
+        this.forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
         return true;
     }
-
 
     @Override
     public WeatherInfo getWeatherInfo() {
@@ -60,8 +54,15 @@ public class WeatherServiceImpl implements WeatherService {
         return weatherInfo;
     }
 
+    private Optional<City[]> getCitiesFromRemoteApi(String cityToSearch) {
+        return remoteApiFetcher.fetchCitiesFromRemoteApi(cityToSearch);
+    }
 
-    public String getIconLink() {
+    private Optional<WeatherForecast> getWeatherForecastFromRemoteApi(City cityToSearch) {
+        return remoteApiFetcher.fetchWeatherForecastFromRemoteApi(cityToSearch);
+    }
+
+    private String getIconLink() {
         String weatherState = weatherForecast.getConsolidatedWeather().get(0).getWeatherStateAbbr();
         String link = "";
         try {

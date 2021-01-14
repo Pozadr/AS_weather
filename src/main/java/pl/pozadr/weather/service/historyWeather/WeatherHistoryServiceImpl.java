@@ -58,13 +58,12 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
 
     @Override
     public boolean setCityToFollow(String cityToFollow) {
-        Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(cityToFollow);
-        if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
-            this.followedCity = citiesOpt.get()[0].getTitle();
-            return true;
-        } else {
+        Optional<City[]> citiesOpt = getCitiesFromRemoteApi(cityToFollow);
+        if (citiesOpt.isEmpty() || (citiesOpt.get().length == 0)) {
             return false;
         }
+        this.followedCity = citiesOpt.get()[0].getTitle();
+        return true;
     }
 
     @Override
@@ -74,18 +73,22 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
 
 
     private boolean setWeatherForecast(City city) {
-        Optional<WeatherForecast> weatherForecastOpt =
-                remoteApiFetcher.fetchWeatherForecastFromRemoteApi(city);
-        if (weatherForecastOpt.isPresent()) {
-            weatherForecast = weatherForecastOpt.get();
-            forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
-        } else {
-            System.out.println("Error: Remote API data fetcher failure.");
+        Optional<WeatherForecast> weatherForecastOpt = getWeatherForecastFromRemoteApi(city);
+        if (weatherForecastOpt.isEmpty()) {
             return false;
         }
+        this.weatherForecast = weatherForecastOpt.get();
+        this.forecastFirstDay = weatherForecast.getConsolidatedWeather().get(0);
         return true;
     }
 
+    private Optional<City[]> getCitiesFromRemoteApi(String cityToSearch) {
+        return remoteApiFetcher.fetchCitiesFromRemoteApi(cityToSearch);
+    }
+
+    private Optional<WeatherForecast> getWeatherForecastFromRemoteApi(City cityToSearch) {
+        return remoteApiFetcher.fetchWeatherForecastFromRemoteApi(cityToSearch);
+    }
     private void saveWeather() {
         WeatherHistory weatherHistory = new WeatherHistory();
         weatherHistory.setCity(weatherForecast.getTitle());
@@ -105,7 +108,6 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
 
         weatherHistoryRepo.save(weatherHistory);
     }
-
 
     private String getIconLink() {
         String weatherState = weatherForecast.getConsolidatedWeather().get(0).getWeatherStateAbbr();
