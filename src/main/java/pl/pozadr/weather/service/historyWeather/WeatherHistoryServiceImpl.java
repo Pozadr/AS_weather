@@ -33,18 +33,6 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         this.followedCity = "None";
     }
 
-    @Scheduled(fixedDelay = 3600000)
-    private void saveDataToDataBase() {
-        if (!followedCity.isBlank() || !followedCity.equals("None")) {
-            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
-            if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
-                boolean isWeatherSet = setWeatherForecast(citiesOpt.get()[0]);
-                if (isWeatherSet) {
-                    saveWeather();
-                }
-            }
-        }
-    }
 
     @Override
     public List<WeatherHistory> findAll() {
@@ -71,6 +59,18 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
         return followedCity;
     }
 
+    @Scheduled(fixedDelay = 3600000)
+    private void saveDataToDataBase() {
+        if (!followedCity.isBlank() || !followedCity.equals("None")) {
+            Optional<City[]> citiesOpt = remoteApiFetcher.fetchCitiesFromRemoteApi(followedCity);
+            if (citiesOpt.isPresent() && !(citiesOpt.get().length == 0)) {
+                boolean isWeatherSet = setWeatherForecast(citiesOpt.get()[0]);
+                if (isWeatherSet) {
+                    saveWeather();
+                }
+            }
+        }
+    }
 
     private boolean setWeatherForecast(City city) {
         Optional<WeatherForecast> weatherForecastOpt = getWeatherForecastFromRemoteApi(city);
@@ -83,12 +83,14 @@ public class WeatherHistoryServiceImpl implements WeatherHistoryService {
     }
 
     private Optional<City[]> getCitiesFromRemoteApi(String cityToSearch) {
-        return remoteApiFetcher.fetchCitiesFromRemoteApi(cityToSearch);
+        return remoteApiFetcher.fetchCitiesFromRemoteApi(cityToSearch)
+                .filter(cities -> cities.length != 0);
     }
 
     private Optional<WeatherForecast> getWeatherForecastFromRemoteApi(City cityToSearch) {
         return remoteApiFetcher.fetchWeatherForecastFromRemoteApi(cityToSearch);
     }
+
     private void saveWeather() {
         WeatherHistory weatherHistory = new WeatherHistory();
         weatherHistory.setCity(weatherForecast.getTitle());

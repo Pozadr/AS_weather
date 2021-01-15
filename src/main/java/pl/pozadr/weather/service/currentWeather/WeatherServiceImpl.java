@@ -9,7 +9,9 @@ import pl.pozadr.weather.model.currentWeather.ConsolidatedWeather;
 import pl.pozadr.weather.model.currentWeather.IconLink;
 import pl.pozadr.weather.model.currentWeather.WeatherForecast;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 @Service
@@ -26,7 +28,7 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     public boolean setWeatherForecast(String cityInput) {
         Optional<City[]> citiesFromRemoteApi = getCitiesFromRemoteApi(cityInput);
-        if (citiesFromRemoteApi.isEmpty() || citiesFromRemoteApi.get().length == 0) {
+        if (citiesFromRemoteApi.isEmpty()) {
             return false;
         }
         City city = citiesFromRemoteApi.get()[0];
@@ -55,7 +57,8 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     private Optional<City[]> getCitiesFromRemoteApi(String cityToSearch) {
-        return remoteApiFetcher.fetchCitiesFromRemoteApi(cityToSearch);
+        return remoteApiFetcher.fetchCitiesFromRemoteApi(cityToSearch)
+                .filter(cities -> cities.length != 0);
     }
 
     private Optional<WeatherForecast> getWeatherForecastFromRemoteApi(City cityToSearch) {
